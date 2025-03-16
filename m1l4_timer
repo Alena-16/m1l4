@@ -1,5 +1,16 @@
 import telebot
 import time, threading, schedule
+
+'''
+Команда '/start' запускает бота
+Команда '/hello' выдаёт приветствие
+Команда '/heh' выдаёт he 5 раз
+Команда '/help' выдаёт инструкцию по запуску таймера: Hi! Use /set <seconds> to set a timer
+Команда '/set' запускает таймер на определённое количество секунд, по завершении установленного времени бот выдаёт 'Beep!'
+Команда 'unset' отменяет таймер
+
+'''
+
 # Инициализация бота с использованием его токена
 bot = telebot.TeleBot("8055184586:AAEtsWJv2F3PZVevS124VgZMpaSfUu3Fdsk")
 
@@ -14,7 +25,7 @@ def send_heh(message):
     count_heh = int(message.text.split()[1]) if len(message.text.split()) > 1 else 5
     bot.reply_to(message, "he" * count_heh)
 
-@bot.message_handler(commands=['help', 'start'])
+@bot.message_handler(commands=['help'])
 def send_welcome(message):
     bot.reply_to(message, "Hi! Use /set <seconds> to set a timer")
 
@@ -37,7 +48,6 @@ def set_timer(message):
 @bot.message_handler(commands=['unset'])
 def unset_timer(message):
     schedule.clear(message.chat.id)
-
 
 if __name__ == '__main__':
     threading.Thread(target=bot.infinity_polling, name='bot_infinity_polling', daemon=True).start()
